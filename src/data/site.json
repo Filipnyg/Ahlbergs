@@ -1,0 +1,11 @@
+{
+  "siteName": "ahlbergs wedding",
+  "navigation": [
+    { "label": "Home", "path": "/" },
+    { "label": "RSVP", "path": "/rsvp" },
+    { "label": "Schedule", "path": "/schedule" },
+    { "label": "Information", "path": "/info" },
+    { "label": "Registry", "path": "/registry" },
+    { "label": "Gallery", "path": "/gallery" }
+  ]
+}

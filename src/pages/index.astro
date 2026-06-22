@@ -1,17 +1,141 @@
 ---
-
+import Layout from '../layouts/Layout.astro';
+import siteData from '../data/site.json';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout>
+  <div id="welcome-screen" class="welcome-overlay">
+    <h1 class="welcome-title">{siteData.siteName}</h1>
+    <p class="scroll-hint">Scroll or tap to enter</p>
+  </div>
+
+  <main class="main-content">
+    <nav class="global-nav">
+      {siteData.navigation.map(nav => (
+        <a href={nav.path}>{nav.label}</a>
+      ))}
+    </nav>
+    
+    <section class="hero-section">
+      <img src="/assets/hero-couple.jpg" alt="Ahlbergs Wedding" class="hero-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+      <div class="image-placeholder-frame" style="display: none;">
+        <p class="frame-text">Add your photo to public/assets/hero-couple.jpg</p>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .welcome-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.8s ease-in-out;
+    cursor: pointer;
+  }
+
+  .welcome-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .welcome-title {
+    font-size: 4.5rem;
+    color: var(--text-main);
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .scroll-hint {
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    animation: fadePulse 2s infinite ease-in-out;
+  }
+
+  @keyframes fadePulse {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.6; }
+  }
+
+  .main-content {
+    min-height: 100vh;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .global-nav {
+    display: flex;
+    gap: 2.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .global-nav a {
+    text-decoration: none;
+    color: var(--text-main);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    transition: color 0.2s ease;
+  }
+  
+  .global-nav a:hover {
+    color: var(--accent-green);
+  }
+
+  .hero-section {
+    width: 100%;
+    max-width: 900px;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  }
+
+  .image-placeholder-frame {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: #EAEAEA;
+    border: 1px dashed var(--accent-green);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+  }
+
+  .frame-text {
+    font-size: 0.9rem;
+    color: var(--text-main);
+    opacity: 0.6;
+  }
+</style>
+
+<script>
+  const welcomeScreen = document.getElementById('welcome-screen');
+
+  if (welcomeScreen) {
+    const hideWelcomeScreen = () => {
+      welcomeScreen.classList.add('hidden');
+      window.removeEventListener('scroll', hideWelcomeScreen);
+      welcomeScreen.removeEventListener('click', hideWelcomeScreen);
+    };
+
+    window.addEventListener('scroll', hideWelcomeScreen, { once: true, passive: true });
+    welcomeScreen.addEventListener('click', hideWelcomeScreen, { once: true });
+  }
+</script>
