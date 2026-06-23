@@ -30,13 +30,25 @@ const { title = siteData.siteName } = Astro.props;
     }
 
     body {
-      background-color: var(--bg-color);
+      background-color: var(--bg-color); /* Fallback */
+      background-image: linear-gradient(rgba(250, 250, 250, 0.92), rgba(250, 250, 250, 0.92)), url('/assets/splash-bg.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed; /* Keeps the background still while scrolling */
+      background-repeat: no-repeat;
       color: var(--text-main);
       font-family: var(--font-body);
       min-height: 100vh;
       overflow-x: hidden;
     }
-
+/* Transforms all solid white containers into elegant frosted glass */
+    .content-wrapper {
+      background: rgba(255, 255, 255, 0.85) !important;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08) !important;
+    }
     h1, h2, h3, .heading-font {
       font-family: var(--font-heading);
       font-weight: normal;
