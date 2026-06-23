@@ -1,15 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Navigation from '../components/Navigation.astro';
 import siteData from '../data/site.json';
 ---
 
-<Layout>
-  <!-- Full-Screen Welcome Overlay -->
-  <div id="welcome-screen" class="welcome-overlay">
+<Layout title="Welcome | Ahlbergs Wedding">
+  <main class="welcome-overlay">
     
     <div class="welcome-title-wrapper">
-      <!-- Left Leaf (Flipped) -->
       <svg class="decorative-leaf left-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
         <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
         <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
@@ -17,56 +14,41 @@ import siteData from '../data/site.json';
 
       <h1 class="welcome-title">{siteData.siteName}</h1>
 
-      <!-- Right Leaf -->
       <svg class="decorative-leaf right-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
         <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
         <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
       </svg>
     </div>
 
-    <p class="scroll-hint">Scroll or tap to enter</p>
-  </div>
-
-  <!-- Primary Website Content -->
-  <main class="main-content">
-    <Navigation />
+    <form class="lock-form" action="/api/login" method="POST">
+      <input type="password" name="password" required placeholder="Enter Guest Password" />
+      <button type="submit" class="submit-button">Enter Site</button>
+    </form>
     
-    <section class="hero-section">
-      <img src="/assets/hero-couple.jpg" alt="Ahlbergs Wedding" class="hero-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-      <div class="image-placeholder-frame" style="display: none;">
-        <p class="frame-text">Add your photo to public/assets/hero-couple.jpg</p>
-      </div>
-    </section>
+    <p id="error-message" class="error-message" style="display: none;">Incorrect password. Please try again.</p>
+
   </main>
 </Layout>
 
+<script>
+  if (window.location.search.includes('error=1')) {
+    document.getElementById('error-message').style.display = 'block';
+  }
+</script>
+
 <style>
   .welcome-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100vw;
-    height: 100vh;
-    /* Layer 1: 85% opaque white wash, Layer 2: The background image */
+    min-height: 100vh;
     background-image: linear-gradient(rgba(250, 250, 250, 0.85), rgba(250, 250, 250, 0.85)), url('/assets/splash-bg.jpg');
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
-    background-color: var(--bg-color); /* Fallback */
+    background-color: var(--bg-color);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 50;
-    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.8s ease-in-out;
-    cursor: pointer;
     padding: 1rem;
-  }
-
-  .welcome-overlay.hidden {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
   }
 
   .welcome-title-wrapper {
@@ -74,103 +56,73 @@ import siteData from '../data/site.json';
     align-items: center;
     justify-content: center;
     gap: clamp(0.5rem, 3vw, 2rem);
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
   }
 
   .decorative-leaf {
     width: clamp(2rem, 6vw, 4rem);
     height: clamp(2rem, 6vw, 4rem);
-    color: var(--accent-green); /* Kept leaves green for contrast against the black text */
+    color: #000000; 
     opacity: 0.8;
   }
 
-  .left-leaf {
-    transform: scaleX(-1) rotate(-15deg);
-  }
-
-  .right-leaf {
-    transform: rotate(-15deg);
-  }
+  .left-leaf { transform: scaleX(-1) rotate(-15deg); }
+  .right-leaf { transform: rotate(-15deg); }
 
   .welcome-title {
     font-size: clamp(2.5rem, 8vw, 5rem); 
-    color: #000000; /* Changed to pure black */
+    color: #000000; 
     text-align: center;
     line-height: 1.1;
   }
 
-  .scroll-hint {
-    font-size: clamp(0.7rem, 2vw, 0.85rem);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #000000; /* Darkened hint text to match */
-    opacity: 0.5;
-    animation: fadePulse 2s infinite ease-in-out;
-    text-align: center;
+  .lock-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 300px;
     margin-top: 1rem;
   }
 
-  @keyframes fadePulse {
-    0%, 100% { opacity: 0.2; }
-    50% { opacity: 0.6; }
-  }
-
-  .main-content {
-    min-height: 100vh;
-    padding: clamp(2rem, 5vw, 4rem) 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .hero-section {
-    width: 100%;
-    max-width: 900px;
-    padding: 0 1rem;
-  }
-
-  .hero-image {
-    width: 100%;
-    height: auto;
+  .lock-form input {
+    padding: 0.8rem 1rem;
+    border: 1px solid rgba(0,0,0,0.2);
     border-radius: 4px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    display: block;
-  }
-
-  .image-placeholder-frame {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    background-color: #EAEAEA;
-    border: 1px dashed var(--accent-green);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 4px;
+    font-size: 1rem;
+    font-family: var(--font-body);
     text-align: center;
-    padding: 1rem;
+    background: rgba(255, 255, 255, 0.9);
   }
 
-  .frame-text {
+  .lock-form input:focus {
+    outline: 2px solid var(--accent-green);
+    border-color: transparent;
+  }
+
+  .submit-button {
+    padding: 0.8rem 1rem;
+    background-color: var(--accent-green);
+    color: #1B3320;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .submit-button:hover { opacity: 0.9; }
+
+  .error-message {
+    color: #d9534f;
+    margin-top: 1rem;
     font-size: 0.9rem;
-    color: var(--text-main);
-    opacity: 0.6;
+    font-weight: 500;
+    background: rgba(255,255,255,0.9);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
   }
 </style>
-
-<script>
-  const welcomeScreen = document.getElementById('welcome-screen');
-
-  if (welcomeScreen) {
-    const hideWelcomeScreen = () => {
-      welcomeScreen.classList.add('hidden');
-      window.removeEventListener('scroll', hideWelcomeScreen);
-      welcomeScreen.removeEventListener('click', hideWelcomeScreen);
-    };
-
-    window.addEventListener('scroll', hideWelcomeScreen, { once: true, passive: true });
-    welcomeScreen.addEventListener('click', hideWelcomeScreen, { once: true });
-  }
-</script>
