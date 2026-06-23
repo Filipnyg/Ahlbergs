@@ -1,0 +1,118 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+---
+
+<Layout title="Registry | Ahlbergs Wedding">
+  <main class="page-container">
+    <Navigation />
+    
+    <article class="content-wrapper">
+      <h1 class="page-title">Gift Registry</h1>
+      
+      <div class="registry-content">
+        <svg class="gift-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 12 20 22 4 22 4 12"></polyline>
+          <rect x="2" y="7" width="20" height="5"></rect>
+          <line x1="12" y1="22" x2="12" y2="7"></line>
+          <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+          <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+        </svg>
+
+        <p class="registry-text">
+          The most important thing to us is that you are able to celebrate with us on our wedding day. However, if you wish to give a gift, we will gratefully accept a small contribution towards our honeymoon.
+        </p>
+
+        <div class="contribution-box">
+          <h2 class="box-heading">Honeymoon Fund</h2>
+          <p class="account-details"><strong>Swish:</strong> 070 000 00 00</p>
+          <p class="account-details"><strong>Bank Transfer:</strong> Clearing 0000, Account 00000000</p>
+        </div>
+
+        <p class="registry-text secondary-text">
+          Alternatively, if you prefer to give a physical gift, there will be a gift table available at the reception venue.
+        </p>
+      </div>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  .page-container {
+    min-height: 100vh;
+    padding: clamp(2rem, 5vw, 4rem) 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .content-wrapper {
+    width: 100%;
+    max-width: 700px;
+    background: #FFFFFF;
+    padding: clamp(2rem, 5vw, 4rem);
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  .page-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    color: var(--accent-green);
+    margin-bottom: 2rem;
+  }
+
+  .registry-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .gift-icon {
+    width: 48px;
+    height: 48px;
+    color: var(--accent-green);
+    margin-bottom: 1.5rem;
+    opacity: 0.8;
+  }
+
+  .registry-text {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text-main);
+    margin-bottom: 2.5rem;
+    max-width: 550px;
+  }
+
+  .secondary-text {
+    font-size: 0.95rem;
+    opacity: 0.8;
+    margin-bottom: 0;
+  }
+
+  .contribution-box {
+    background-color: var(--bg-color);
+    border: 1px dashed var(--accent-green);
+    border-radius: 8px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 450px;
+    margin-bottom: 2.5rem;
+  }
+
+  .box-heading {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: var(--text-main);
+    margin-bottom: 1rem;
+  }
+
+  .account-details {
+    font-size: 1.1rem;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+  }
+</style>
