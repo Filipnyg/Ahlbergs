@@ -8,9 +8,33 @@ import Navigation from '../components/Navigation.astro';
     <Navigation />
     
     <section class="hero-section">
-      <img src="/assets/hero-couple.jpg" alt="Ahlbergs Wedding" class="hero-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-      <div class="image-placeholder-frame" style="display: none;">
-        <p class="frame-text">Add your photo to public/assets/hero-couple.jpg</p>
+      <div class="hero-image-wrapper">
+        <img src="/assets/hero-couple.jpg" alt="Ahlbergs Wedding" class="hero-image" onerror="this.style.display='none'; document.getElementById('placeholder').style.display='flex';" />
+        
+        <div id="placeholder" class="image-placeholder-frame" style="display: none;">
+          <p class="frame-text">Add your photo to public/assets/hero-couple.jpg</p>
+        </div>
+
+        <div class="timer-overlay">
+          <div class="countdown" id="countdown">
+            <div class="time-box">
+              <span id="days">00</span>
+              <label>Days</label>
+            </div>
+            <div class="time-box">
+              <span id="hours">00</span>
+              <label>Hours</label>
+            </div>
+            <div class="time-box">
+              <span id="minutes">00</span>
+              <label>Mins</label>
+            </div>
+            <div class="time-box">
+              <span id="seconds">00</span>
+              <label>Secs</label>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -32,7 +56,6 @@ import Navigation from '../components/Navigation.astro';
         <h3 class="spotify-heading">Help Us Build the Playlist</h3>
         <p class="spotify-text">Add your favorite dancing songs to our collaborative Spotify playlist so we can celebrate all night.</p>
         
-        <!-- Insert Spotify Link Here -->
         <a href="https://open.spotify.com/playlist/YOUR_LINK_HERE" target="_blank" rel="noopener noreferrer" class="spotify-button">
           Open Spotify Playlist
         </a>
@@ -40,6 +63,28 @@ import Navigation from '../components/Navigation.astro';
     </section>
   </main>
 </Layout>
+
+<script>
+  // Compact script to prevent cutting off
+  const targetDate = new Date("Oct 10, 2026 14:00:00").getTime();
+
+  const timer = setInterval(() => {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    if (distance < 0) {
+      clearInterval(timer);
+      document.getElementById("countdown").innerHTML = "<div style='color: white; font-size: 2rem; font-family: var(--font-heading); text-shadow: 0 4px 15px rgba(0,0,0,0.8);'>Today is the day!</div>";
+      return;
+    }
+
+    // Calculate times and format with a leading zero (e.g., "05" instead of "5")
+    document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+    document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+    document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+    document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+  }, 1000);
+</script>
 
 <style>
   .page-container {
@@ -60,11 +105,18 @@ import Navigation from '../components/Navigation.astro';
     margin-bottom: 3rem;
   }
 
+  /* Creates the positioning context for the overlay */
+  .hero-image-wrapper {
+    position: relative;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden; /* Keeps the image and overlay inside the rounded corners */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  }
+
   .hero-image {
     width: 100%;
     height: auto;
-    border-radius: 4px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     display: block;
   }
 
@@ -76,11 +128,55 @@ import Navigation from '../components/Navigation.astro';
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 4px;
     text-align: center;
     padding: 1rem;
   }
 
+  /* Timer Overlay Styling */
+  .timer-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 2rem 1rem;
+    /* Adds a subtle dark gradient at the bottom so the white text always pops */
+    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+    display: flex;
+    justify-content: center;
+  }
+
+  .countdown {
+    display: flex;
+    gap: clamp(1rem, 4vw, 2.5rem);
+    text-align: center;
+  }
+
+  .time-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .time-box span {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    color: #FFFFFF;
+    line-height: 1;
+    /* The faded dark outline / glow effect */
+    text-shadow: 0 2px 15px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.4);
+  }
+
+  .time-box label {
+    font-size: clamp(0.75rem, 2vw, 0.9rem);
+    color: #FFFFFF;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-top: 0.5rem;
+    font-weight: 500;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+  }
+
+  /* Remaining Content Styling */
   .home-content {
     width: 100%;
     max-width: 800px;
